@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#000000"/>
+  <g fill="#ffffff" opacity="0.95">
+    <!-- Light bulb shape -->
+    <ellipse cx="256" cy="210" rx="90" ry="95"/>
+    <rect x="220" y="295" width="72" height="18" rx="9"/>
+    <rect x="226" y="320" width="60" height="18" rx="9"/>
+    <rect x="233" y="345" width="46" height="18" rx="9"/>
+    <!-- Rays -->
+    <rect x="250" y="80" width="12" height="36" rx="6"/>
+    <rect x="354" y="120" width="36" height="12" rx="6" transform="rotate(45 372 126)"/>
+    <rect x="375" y="204" width="36" height="12" rx="6"/>
+    <rect x="354" y="292" width="36" height="12" rx="6" transform="rotate(-45 372 298)"/>
+    <rect x="126" y="120" width="36" height="12" rx="6" transform="rotate(-45 144 126)"/>
+    <rect x="101" y="204" width="36" height="12" rx="6"/>
+    <rect x="126" y="292" width="36" height="12" rx="6" transform="rotate(45 144 298)"/>
+  </g>
+</svg>
