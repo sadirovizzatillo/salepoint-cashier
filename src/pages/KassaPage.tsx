@@ -37,6 +37,7 @@ export const KassaPage = () => {
           isLoading={productsLoading || categoriesLoading}
         />
       </div>
+        <p>boom</p>
       <div className="w-[30%] flex flex-col overflow-hidden min-h-0">
         <Cart />
       </div>
