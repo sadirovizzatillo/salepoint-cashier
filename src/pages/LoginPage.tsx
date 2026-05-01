@@ -25,13 +25,20 @@ const CredentialsForm: React.FC<CredentialsFormProps> = ({ onSuccess, onDone }) 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading]       = useState(false);
   const [error, setError]               = useState('');
-  const [activeField, setActiveField]   = useState<'email' | 'password'>('email');
+  const [activeField, setActiveField]   = useState<'email' | 'password' | null>(null);
   const [layoutName, setLayoutName]     = useState<'default' | 'shift'>('default');
   const keyboardRef                     = useRef<any>(null);
+  const keyboardWrapperRef              = useRef<HTMLDivElement>(null);
 
   const handleKeyboardChange = (input: string) => {
     if (activeField === 'email') setEmail(input);
-    else setPassword(input);
+    else if (activeField === 'password') setPassword(input);
+  };
+
+  const handleBlur = (e: React.FocusEvent) => {
+    const next = e.relatedTarget as Node | null;
+    if (next && keyboardWrapperRef.current?.contains(next)) return;
+    setActiveField(null);
   };
 
   const handleKeyboardKeyPress = (button: string) => {
@@ -104,6 +111,7 @@ const CredentialsForm: React.FC<CredentialsFormProps> = ({ onSuccess, onDone }) 
               value={email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               onFocus={() => handleFocus('email')}
+              onBlur={handleBlur}
               className="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black/10 focus:border-black outline-none transition-all bg-gray-50 focus:bg-white text-sm text-gray-900 placeholder:text-gray-400"
               placeholder="Email manzilingizni kiriting"
             />
@@ -126,6 +134,7 @@ const CredentialsForm: React.FC<CredentialsFormProps> = ({ onSuccess, onDone }) 
               value={password}
               onChange={(e) => handleInputChange('password', e.target.value)}
               onFocus={() => handleFocus('password')}
+              onBlur={handleBlur}
               className="block w-full pl-10 pr-11 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black/10 focus:border-black outline-none transition-all bg-gray-50 focus:bg-white text-sm text-gray-900 placeholder:text-gray-400"
               placeholder="Parolingizni kiriting"
             />
@@ -161,37 +170,53 @@ const CredentialsForm: React.FC<CredentialsFormProps> = ({ onSuccess, onDone }) 
           )}
         </button>
 
-        <div className="login-keyboard mt-4">
-          <Keyboard
-            keyboardRef={(r) => (keyboardRef.current = r)}
-            inputName={activeField}
-            layoutName={layoutName}
-            onChange={handleKeyboardChange}
-            onKeyPress={handleKeyboardKeyPress}
-            layout={{
-              default: [
-                '1 2 3 4 5 6 7 8 9 0',
-                'q w e r t y u i o p',
-                'a s d f g h j k l',
-                '{shift} z x c v b n m {bksp}',
-                '{space} @ . _ -',
-              ],
-              shift: [
-                '! @ # $ % ^ & * ( )',
-                'Q W E R T Y U I O P',
-                'A S D F G H J K L',
-                '{shift} Z X C V B N M {bksp}',
-                '{space} @ . _ -',
-              ],
-            }}
-            display={{
-              '{bksp}': '⌫',
-              '{shift}': '⇧',
-              '{space}': 'space',
-            }}
-          />
-        </div>
       </form>
+
+      <AnimatePresence>
+        {activeField && (
+          <motion.div
+            ref={keyboardWrapperRef}
+            tabIndex={-1}
+            onMouseDown={(e) => e.preventDefault()}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 24 }}
+            transition={{ duration: 0.2 }}
+            className="fixed left-0 right-0 bottom-0 z-50 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl px-3 sm:px-6 py-3 login-keyboard"
+          >
+            <div className="max-w-3xl mx-auto">
+              <Keyboard
+                keyboardRef={(r) => (keyboardRef.current = r)}
+                inputName={activeField}
+                layoutName={layoutName}
+                onChange={handleKeyboardChange}
+                onKeyPress={handleKeyboardKeyPress}
+                layout={{
+                  default: [
+                    '1 2 3 4 5 6 7 8 9 0',
+                    'q w e r t y u i o p',
+                    'a s d f g h j k l',
+                    '{shift} z x c v b n m {bksp}',
+                    '{space} @ . _ -',
+                  ],
+                  shift: [
+                    '! @ # $ % ^ & * ( )',
+                    'Q W E R T Y U I O P',
+                    'A S D F G H J K L',
+                    '{shift} Z X C V B N M {bksp}',
+                    '{space} @ . _ -',
+                  ],
+                }}
+                display={{
+                  '{bksp}': '⌫',
+                  '{shift}': '⇧',
+                  '{space}': 'space',
+                }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
