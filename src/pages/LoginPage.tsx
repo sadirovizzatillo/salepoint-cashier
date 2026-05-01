@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogIn, User, Lock, Eye, EyeOff, ArrowRight, AlertCircle, ChevronLeft, Store } from 'lucide-react';
 import { toast } from 'sonner';
 import { login, selectShop } from '../api/auth';
 import type { Shop } from '../api/auth';
 import { motion, AnimatePresence } from 'motion/react';
+import Keyboard from 'react-simple-keyboard';
+import 'react-simple-keyboard/build/css/index.css';
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -23,6 +25,33 @@ const CredentialsForm: React.FC<CredentialsFormProps> = ({ onSuccess, onDone }) 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading]       = useState(false);
   const [error, setError]               = useState('');
+  const [activeField, setActiveField]   = useState<'email' | 'password'>('email');
+  const [layoutName, setLayoutName]     = useState<'default' | 'shift'>('default');
+  const keyboardRef                     = useRef<any>(null);
+
+  const handleKeyboardChange = (input: string) => {
+    if (activeField === 'email') setEmail(input);
+    else setPassword(input);
+  };
+
+  const handleKeyboardKeyPress = (button: string) => {
+    if (button === '{shift}' || button === '{lock}') {
+      setLayoutName((prev) => (prev === 'default' ? 'shift' : 'default'));
+    }
+  };
+
+  const handleInputChange = (
+    field: 'email' | 'password',
+    value: string,
+  ) => {
+    if (field === 'email') setEmail(value);
+    else setPassword(value);
+    keyboardRef.current?.setInput(value, field);
+  };
+
+  const handleFocus = (field: 'email' | 'password') => {
+    setActiveField(field);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,7 +102,8 @@ const CredentialsForm: React.FC<CredentialsFormProps> = ({ onSuccess, onDone }) 
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              onFocus={() => handleFocus('email')}
               className="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black/10 focus:border-black outline-none transition-all bg-gray-50 focus:bg-white text-sm text-gray-900 placeholder:text-gray-400"
               placeholder="Email manzilingizni kiriting"
             />
@@ -94,7 +124,8 @@ const CredentialsForm: React.FC<CredentialsFormProps> = ({ onSuccess, onDone }) 
               type={showPassword ? 'text' : 'password'}
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => handleInputChange('password', e.target.value)}
+              onFocus={() => handleFocus('password')}
               className="block w-full pl-10 pr-11 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black/10 focus:border-black outline-none transition-all bg-gray-50 focus:bg-white text-sm text-gray-900 placeholder:text-gray-400"
               placeholder="Parolingizni kiriting"
             />
@@ -129,6 +160,37 @@ const CredentialsForm: React.FC<CredentialsFormProps> = ({ onSuccess, onDone }) 
             </>
           )}
         </button>
+
+        <div className="login-keyboard mt-4">
+          <Keyboard
+            keyboardRef={(r) => (keyboardRef.current = r)}
+            inputName={activeField}
+            layoutName={layoutName}
+            onChange={handleKeyboardChange}
+            onKeyPress={handleKeyboardKeyPress}
+            layout={{
+              default: [
+                '1 2 3 4 5 6 7 8 9 0',
+                'q w e r t y u i o p',
+                'a s d f g h j k l',
+                '{shift} z x c v b n m {bksp}',
+                '{space} @ . _ -',
+              ],
+              shift: [
+                '! @ # $ % ^ & * ( )',
+                'Q W E R T Y U I O P',
+                'A S D F G H J K L',
+                '{shift} Z X C V B N M {bksp}',
+                '{space} @ . _ -',
+              ],
+            }}
+            display={{
+              '{bksp}': '⌫',
+              '{shift}': '⇧',
+              '{space}': 'space',
+            }}
+          />
+        </div>
       </form>
     </motion.div>
   );
