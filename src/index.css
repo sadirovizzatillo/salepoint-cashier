@@ -200,3 +200,19 @@ body {
 .shift-keyboard .simple-keyboard .hg-button.hg-numeric-key {
   height: 60px;
 }
+.search-keyboard .simple-keyboard .hg-button {
+  height: 46px;
+}
+.simple-keyboard .hg-button.hg-enter-key {
+  background: #111;
+  color: #fff;
+  font-weight: 700;
+  flex-grow: 1.5;
+}
+.simple-keyboard .hg-button.hg-enter-key:hover {
+  background: #000;
+}
+.simple-keyboard .hg-button.hg-enter-key:active {
+  background: #000;
+  transform: scale(0.96);
+}
