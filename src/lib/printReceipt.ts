@@ -68,28 +68,29 @@ export function printOrderReceipt(order: Order, opts?: { shopName?: string }): v
         padding: 4mm 3mm;
         font-family: 'Courier New', ui-monospace, Menlo, monospace;
         font-size: 12px;
+        font-weight: 600;
         color: #000;
         line-height: 1.35;
       }
       .center  { text-align: center; }
       .right   { text-align: right; }
-      .bold    { font-weight: 700; }
-      .muted   { color: #444; }
-      .shop    { font-size: 16px; font-weight: 800; letter-spacing: 1px; }
-      .sub     { font-size: 11px; margin-top: 2px; }
+      .bold    { font-weight: 800; }
+      .muted   { color: #222; font-weight: 600; }
+      .shop    { font-size: 16px; font-weight: 900; letter-spacing: 1px; }
+      .sub     { font-size: 11px; font-weight: 600; margin-top: 2px; }
       .sep     { border-top: 1px dashed #000; margin: 6px 0; }
-      .meta    { font-size: 11px; }
+      .meta    { font-size: 11px; font-weight: 600; }
       .meta-row{ display: flex; justify-content: space-between; gap: 8px; }
       .item    { margin: 4px 0; }
       .item-row{ display: flex; justify-content: space-between; gap: 8px; }
-      .item-name { font-weight: 700; }
-      .item-calc { color: #222; }
-      .item-total{ font-weight: 700; }
-      .totals  { font-size: 12px; }
-      .total-row { display: flex; justify-content: space-between; gap: 8px; padding: 1px 0; }
-      .grand   { font-size: 15px; font-weight: 800; padding: 4px 0; }
+      .item-name { font-weight: 800; }
+      .item-calc { color: #000; font-weight: 600; }
+      .item-total{ font-weight: 800; }
+      .totals  { font-size: 12px; font-weight: 600; }
+      .total-row { display: flex; justify-content: space-between; gap: 8px; padding: 1px 0; font-weight: 600; }
+      .grand   { font-size: 15px; font-weight: 900; padding: 4px 0; }
       .pay     { font-size: 11px; font-weight: 700; }
-      .footer  { font-size: 11px; margin-top: 8px; }
+      .footer  { font-size: 11px; font-weight: 600; margin-top: 8px; }
       .barcode { font-family: 'Libre Barcode 39', monospace; font-size: 22px; text-align: center; letter-spacing: 1px; margin-top: 6px; }
     </style>
   </head>
