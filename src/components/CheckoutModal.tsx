@@ -319,7 +319,6 @@ export const CheckoutModal = () => {
                       </button>
 
                       {/* Confirm */}
-                        salom
                       <button
                         disabled={isConfirmDisabled}
                         onClick={handleConfirmPayment}

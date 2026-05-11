@@ -88,7 +88,7 @@ export function printOrderReceipt(order: Order, opts?: { shopName?: string }): v
       .totals  { font-size: 12px; }
       .total-row { display: flex; justify-content: space-between; gap: 8px; padding: 1px 0; }
       .grand   { font-size: 15px; font-weight: 800; padding: 4px 0; }
-      .pay     { font-size: 11px; }
+      .pay     { font-size: 11px; font-weight: 700; }
       .footer  { font-size: 11px; margin-top: 8px; }
       .barcode { font-family: 'Libre Barcode 39', monospace; font-size: 22px; text-align: center; letter-spacing: 1px; margin-top: 6px; }
     </style>
@@ -113,7 +113,7 @@ export function printOrderReceipt(order: Order, opts?: { shopName?: string }): v
     <div class="sep"></div>
 
     <div class="totals">
-      <div class="total-row"><span>Oraliq summa</span><span>${fmt(subtotal)}</span></div>
+<!--      <div class="total-row"><span>Oraliq summa</span><span>${fmt(subtotal)}</span></div>-->
       ${taxAmount > 0 ? `<div class="total-row"><span>Soliq</span><span>${fmt(taxAmount)}</span></div>` : ''}
       ${discountAmount > 0 ? `<div class="total-row"><span>Chegirma</span><span>−${fmt(discountAmount)}</span></div>` : ''}
     </div>
