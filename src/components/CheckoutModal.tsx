@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import { NumberPad } from './NumberPad';
 import { createOrder } from '../api/orders';
+import { printOrderReceipt } from '../lib/printReceipt';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -121,7 +122,7 @@ export const CheckoutModal = () => {
 
     setIsPending(true);
     try {
-      await createOrder(
+      const order = await createOrder(
         {
           items: cart.map((item) => ({ productId: item.id, quantity: item.quantity })),
           paidByCash: parseFloat(cashSplit) || 0,
@@ -132,6 +133,10 @@ export const CheckoutModal = () => {
         printReceipt,
       );
       queryClient.invalidateQueries({ queryKey: ['orders'] });
+      if (printReceipt && order) {
+        // Defer slightly so the success animation has a chance to render before the print dialog opens
+        setTimeout(() => printOrderReceipt(order), 250);
+      }
       confirmPayment();
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Xatolik yuz berdi';

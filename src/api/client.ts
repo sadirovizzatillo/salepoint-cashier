@@ -12,6 +12,7 @@ export const tokens = {
   clear() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('activeShopName');
   },
 };
 

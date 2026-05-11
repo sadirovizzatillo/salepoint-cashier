@@ -239,6 +239,8 @@ const ShopPicker: React.FC<ShopPickerProps> = ({ preAuthToken, shops, onBack, on
     setLoadingShopId(shopId);
     try {
       await selectShop(preAuthToken, shopId);
+      const picked = shops.find((s) => s.id === shopId);
+      if (picked?.name) localStorage.setItem('activeShopName', picked.name);
       onDone();
       navigate('/');
     } catch (err) {
