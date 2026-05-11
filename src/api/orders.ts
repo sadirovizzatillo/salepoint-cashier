@@ -71,11 +71,14 @@ export interface OrdersResponse {
   };
 }
 
-export const createOrder = (payload: CreateOrderPayload, printCheck = false) =>
-  fetch<Order>(printCheck ? '/orders?isPrintCheck=true' : '/orders', {
+export const createOrder = async (payload: CreateOrderPayload, printCheck = false): Promise<Order> => {
+  const res = await fetch<any>(printCheck ? '/orders?isPrintCheck=true' : '/orders', {
     method: 'POST',
     body: JSON.stringify(payload),
   });
+  // Unwrap { success, data, timestamp } envelope
+  return res?.data ?? res;
+};
 
 export const reprintOrder = (id: string) =>
   fetch<void>(`/orders/${id}/print`, { method: 'POST' });

@@ -133,6 +133,8 @@ export const CheckoutModal = () => {
         printReceipt,
       );
       queryClient.invalidateQueries({ queryKey: ['orders'] });
+      console.log('[receipt] full order data:', order);
+      console.log('[receipt] items:', order?.items);
       if (printReceipt && order) {
         // Defer slightly so the success animation has a chance to render before the print dialog opens
         setTimeout(() => printOrderReceipt(order), 250);
