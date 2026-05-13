@@ -69,7 +69,7 @@ export const Cart = () => {
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-semibold truncate text-gray-800">{item.name}</p>
-                    <p className="text-[10px] text-gray-400">${item.price.toFixed(2)}</p>
+                    <p className="text-[10px] text-gray-400">{Math.round(item.price).toLocaleString('de-DE')} so'm</p>
                   </div>
                   {/* Qty */}
                   <span className="px-2 py-1 bg-gray-100 rounded-lg text-[11px] font-black text-black shrink-0">

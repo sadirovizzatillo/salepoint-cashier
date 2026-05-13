@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useStore } from '../store';
 import { Icon } from '@iconify/react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useQueryClient, useIsFetching } from '@tanstack/react-query';
 import { Product } from '../types';
 import { Badge } from './ui/badge';
 import { cn } from '../lib/utils';
@@ -20,6 +21,10 @@ export const Kassa = ({ filteredProducts, categories, isLoading }: KassaProps) =
   const setProductView = useStore((state) => state.setProductView);
 
   const [counterProduct, setCounterProduct] = useState<Product | null>(null);
+
+  const queryClient = useQueryClient();
+  const isRefreshing = useIsFetching({ queryKey: ['products'] }) > 0;
+  const handleRefresh = () => queryClient.invalidateQueries({ queryKey: ['products'] });
 
   return (
     <div className="flex-1 flex flex-col p-3 lg:p-4 gap-3 overflow-hidden min-h-0 min-w-0">
@@ -42,6 +47,19 @@ export const Kassa = ({ filteredProducts, categories, isLoading }: KassaProps) =
             </button>
           ))}
         </div>
+
+        {/* Refresh */}
+        <button
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          title="Yangilash"
+          className="w-8 h-8 flex items-center justify-center bg-white border border-gray-100 rounded-lg text-gray-500 hover:text-black hover:border-gray-200 transition-all shrink-0 disabled:opacity-60 disabled:cursor-not-allowed active:scale-95"
+        >
+          <Icon
+            icon="solar:refresh-bold-duotone"
+            className={cn('text-[14px]', isRefreshing && 'animate-spin')}
+          />
+        </button>
 
         {/* View toggle */}
         <div className="flex items-center bg-white border border-gray-100 rounded-lg p-0.5 shrink-0">
@@ -137,7 +155,7 @@ export const Kassa = ({ filteredProducts, categories, isLoading }: KassaProps) =
                   </div>
                   <div className="mt-1 px-0.5">
                     <p className="text-[10px] font-semibold text-gray-700 truncate leading-tight">{product.name}</p>
-                    <p className="text-[11px] font-black text-black mt-0.5">${product.price.toFixed(2)}</p>
+                    <p className="text-[11px] font-black text-black mt-0.5">{Math.round(product.price).toLocaleString('de-DE')} so'm</p>
                   </div>
                 </motion.div>
                 );
@@ -184,7 +202,7 @@ export const Kassa = ({ filteredProducts, categories, isLoading }: KassaProps) =
                     {product.category}
                   </Badge>
                   <p className="flex-1 text-[11px] font-semibold text-gray-800 truncate">{product.name}</p>
-                  <p className="text-xs font-black text-black shrink-0">${product.price.toFixed(2)}</p>
+                  <p className="text-xs font-black text-black shrink-0">{Math.round(product.price).toLocaleString('de-DE')} so'm</p>
                   {outOfStock ? (
                     <span className="text-[9px] font-bold text-red-500 shrink-0">Tugadi</span>
                   ) : (
